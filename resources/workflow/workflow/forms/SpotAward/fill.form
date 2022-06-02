@@ -1,0 +1,162 @@
+{
+    "id": "fill",
+    "schemaVersion": "1.1.0",
+    "name": "fill",
+    "revision": "1.0",
+    "type": "task",
+    "readOnly": false,
+    "content": [
+        {
+            "id": "spot_award",
+            "type": "section",
+            "title": "Spot Award",
+            "content": [
+                {
+                    "id": "award_amount",
+                    "type": "float",
+                    "label": "Award Amount",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.awardAmount}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "award_category",
+                    "type": "string",
+                    "label": "Award Category",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.category}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "award_level",
+                    "type": "string",
+                    "label": "Award Level",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.level}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "guideline_amount",
+                    "type": "float",
+                    "label": "Guideline Amount",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.guidelineAmount}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "message_to_recipient",
+                    "type": "string",
+                    "label": "Message to Recipient",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.commentForReceiver}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "approval_status",
+                    "type": "string",
+                    "label": "Approval Status",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.approvalStatus}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "currency",
+                    "type": "string",
+                    "label": "Currency",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.currency}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "message_to_approvers",
+                    "type": "string",
+                    "label": "Message to Approvers",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.commentForApprovers}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "spot_award_program",
+                    "type": "string",
+                    "label": "Spot Award Program",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.spotAwardProgram}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "award_recipient",
+                    "type": "string",
+                    "label": "Award Recipient",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.nomineeFullName}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "nominator",
+                    "type": "string",
+                    "label": "Nominator",
+                    "readOnly": true,
+                    "value": "${context.workflowPendingData.nominatorFullName}",
+                    "constraints": {
+                        "required": false
+                    }
+                }
+            ]
+        },
+        {
+            "id": "your_comment",
+            "type": "section",
+            "title": "Your Comment",
+            "content": [
+                {
+                    "id": "comment",
+                    "type": "string",
+                    "label": "Comment",
+                    "readOnly": false,
+                    "value": "${context.comment}",
+                    "control": {
+                        "type": "TextArea",
+                        "properties": {
+                            "height": "small"
+                        }
+                    },
+                    "constraints": {
+                        "required": false
+                    }
+                }
+            ]
+        }
+    ],
+    "decisions": [
+        {
+            "id": "decline",
+            "text": "Decline",
+            "decisionType": "negative"
+        },
+        {
+            "id": "approve",
+            "text": "Approve",
+            "decisionType": "positive"
+        }
+    ]
+}

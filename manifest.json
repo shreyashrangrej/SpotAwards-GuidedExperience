@@ -1,0 +1,114 @@
+{
+  "_version": "1.15.0",
+  "sap.app": {
+    "id": "workzone2.workzonehr.sap.sf.workflow.spotaward",
+    "type": "card",
+    "title": "{{SPOT_AWARD_CARD_TITLE}}",
+    "subTitle": "{{SPOT_AWARD_CARD_SUBTITLE}}",
+    "applicationVersion": {
+      "version": "2.0.0"
+    },
+    "shortTitle": "",
+    "info": "",
+    "description": "{{SPOT_AWARD_CARD_DESCRIPTION}}",
+    "i18n": "i18n/i18n.properties",
+    "tags": {
+      "keywords": [
+        "{{SPOT_AWARD_CARD_KEYWORD1}}",
+        "{{SPOT_AWARD_CARD_KEYWORD2}}",
+        "{{SPOT_AWARD_CARD_KEYWORD3}}",
+        "{{SPOT_AWARD_CARD_KEYWORD4}}"
+      ]
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "sap-icon://competitor"
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "workzone2.workzonehr.sap.sf.workflow.spotaward.view.Main",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.84",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.ui.unified": {},
+        "sap.f": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "workzone2.workzonehr.sap.sf.workflow.spotaward.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    }
+  },
+  "sap.card": {
+    "configuration": {
+      "destinations": {
+        "apiDestination": {
+          "name": "SuccessFactors_API",
+          "label": "{{SPOT_AWARD_CARD_BIZX_DESTINATION}}"
+        },
+        "wfDestination": {
+          "name": "Workflow_API",
+          "label": "{{SPOT_AWARD_CARD_WORKFLOW_DESTINATION}}"
+        }
+      },
+      "parameters": {
+        "host": {
+          "value": "{context>sap.successfactors/currentCompany/webHost/value}",
+          "label": "SF host",
+          "type": "string",
+          "visible": false
+        },
+        "workZoneHost": {
+          "value": "{context>sap.workzone/currentCompany/webHost/value}",
+          "type": "string",
+          "visible": false
+        },
+        "loginUser": {
+          "value": "{context>sap.successfactors/currentUser/id/value}",
+          "label": "login SF user ID",
+          "type": "string",
+          "visible": false
+        },
+        "workflowDefinitionId": {
+          "value": "SpotAward",
+          "label": "{{PARAM_WORKFLOW_DEFINITION_ID}}",
+          "type": "string",
+          "visible": false
+        },
+        "qualtricsURL": {
+          "value": ""
+        }
+      }
+    },
+    "type": "Component",
+    "designtime": "dt/designtime",
+    "header": {
+      "icon": {
+        "src": "sap-icon://competitor"
+      },
+      "title": "{{SPOT_AWARD_CARD_TITLE}}",
+      "subTitle": "{{SPOT_AWARD_CARD_SUBTITLE}}"
+    }
+  }
+}

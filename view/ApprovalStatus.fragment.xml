@@ -1,0 +1,41 @@
+<core:FragmentDefinition height="100%"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns="sap.m">
+    <Page id="wizardReviewPage" showHeader="false" backgroundDesign="Transparent">
+        <l:DynamicSideContent id="DynamicSideContent" equalSplit="true">
+            <VBox id="workflowStatusLeft" class="sapUiMediumMarginTop sapUiMediumMarginBegin">
+                <l:BlockLayout id="BlockLayoutTwo">
+                    <l:BlockLayoutRow id="continue">
+                        <l:BlockLayoutCell title="{i18n>WORKFLOW_STATUS_SUBMITTED_TITLE}" titleAlignment="Left">
+                            <Label text="{i18n>WORKFLOW_STATUS_SUBMITTED_DESC}" wrapping="true" />
+                        </l:BlockLayoutCell>
+                    </l:BlockLayoutRow>
+                    <l:BlockLayoutRow>
+                        <l:BlockLayoutCell>
+                            <List items="{/chosenEmployees/data}">
+                              <StandardListItem title="{name}" description="{comments}" icon="{photo}" info="{statusInfo}" infoState="{statusInfoState}"/>
+                            </List>
+                        </l:BlockLayoutCell>
+                    </l:BlockLayoutRow>
+                    <l:BlockLayoutRow>
+                        <l:BlockLayoutCell>
+                            <Button text="{i18n>WIZARD_COMPLETE_BTN_LABEL}" type="Emphasized" press="backToWizard"/>
+                        </l:BlockLayoutCell>
+                    </l:BlockLayoutRow>
+                </l:BlockLayout>
+            </VBox>
+            <l:sideContent>
+                <VBox id="qualtricsRight" class="submitStatus" height="100%" visible="{/needQualtrics}">
+                    <l:BlockLayout class="sapUiMediumMarginTop sapUiMediumMarginBegin">
+                        <l:BlockLayoutRow>
+                            <l:BlockLayoutCell title="{i18n>QUALTRICS_TITLE}" titleAlignment="Left">
+                            </l:BlockLayoutCell>
+                        </l:BlockLayoutRow>
+                    </l:BlockLayout>
+                    <Text id="awardLink" text="" class="sapUiLargeMarginBegin"/>
+                </VBox>
+            </l:sideContent>
+        </l:DynamicSideContent>
+    </Page>
+</core:FragmentDefinition>

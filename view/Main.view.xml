@@ -1,0 +1,220 @@
+<mvc:View xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:g="sap.ui.layout.cssgrid"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:u="sap.ui.unified" height="100%"
+    xmlns:html="http://www.w3.org/1999/xhtml" controllerName="workzone2.workzonehr.sap.sf.workflow.spotaward.controller.Main">
+
+    <!-- <Text class="sapUiSmallMarginBottom" text="Sed fermentum, mi et"/> -->
+
+    <NavContainer id="wizardNavContainer" height="40rem" navigate="getWorkflowStatus">
+        <!-- <pages> -->
+        <Page id="descriptionPage" showHeader="false" backgroundDesign="Transparent">
+            <l:BlockLayout id="BlockLayoutTwo">
+                <l:BlockLayoutRow>
+                    <l:BlockLayoutCell title="{i18n>DESC_TITLE}" titleAlignment="Left">
+                        <FormattedText htmlText="{i18n>DESC_INFORMATION}" />
+                        <Label text="{i18n>DESC_INFORMATION_2}" class="sapUiSmallMarginTop sapUiTinyMarginEnd" wrapping="true"/>
+                        <Link text="{i18n>HELP_INFORMATION_TEXT}"  tooltip="{i18n>HELP_INFORMATION_TITLE}" href="https://help.sap.com/viewer/04877e17a5da4908a6fea94949e160b5/Cloud/en-US/beea1ea469d64cbda3c874a5fc229038.html"></Link>
+                    </l:BlockLayoutCell>
+                </l:BlockLayoutRow>
+                <l:BlockLayoutRow>
+                    <l:BlockLayoutCell>
+                        <Button text="{i18n>WIZARD_START_BTN_LABEL}" type="Emphasized" press="navigateToWizardPage" />
+                    </l:BlockLayoutCell>
+                </l:BlockLayoutRow>
+            </l:BlockLayout>
+        </Page>
+        <Page id="wizardContentPage" showHeader="false">
+            <content>
+                <Wizard id="SpotAward" complete="completeWizard" finishButtonText="{i18n>WIZARD_SUBMIT_BTN_LABEL}">
+                    <WizardStep id="SelectSpotAwardProgram" title="{i18n>STEP1_SEARCH_CHOOSE_PROGRAM}" validated="false" icon="sap-icon://badge" class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                        <VBox>
+                          <Title titleStyle="H3" text="{i18n>STEP1_NOMINATE_TITLE}"/>
+                          <Input id="searchInput" type="Text" placeholder="{i18n>STEP1_NOMINATE_PLACEHOLDER}" showSuggestion="true" suggest="nominationSuggest" startSuggestion="2" showTableSuggestionValueHelp="false" suggestionRows="{/suggestItems}" suggestionItemSelected="addCandidate" width="15rem" class="sapUiSmallMarginTop" filterSuggests="false">
+                              <suggestionColumns visible="false">
+                                  <Column visible="false">
+                                  </Column>
+                                  <Column >
+                                  </Column>
+                              </suggestionColumns>
+                              <suggestionRows>
+                                <ColumnListItem>
+                                    <cells>
+                                          <Label text="{name}"/>
+                                        <HBox >
+                                            <Avatar src="{photo}" displaySize="S" displayShape="Square" backgroundColor="Placeholder"/>
+                                            <VBox class="sapUiTinyMarginBegin">
+                                                <Label text="{name}"/>
+                                                <Label text="{employments/0/title}" wrapping="true"/>
+                                            </VBox>
+                                        </HBox>
+                                    </cells>
+                                </ColumnListItem>
+                              </suggestionRows>
+                            </Input>
+
+                            <Label id="noUserLabel" text=""/>
+
+                            <f:GridList id="candidateList" items="{path: '/chosenEmployees/data'}" showNoData="false" class="sapUiSmallMarginTop">
+                                <f:customLayout>
+                                    <g:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 21rem))" gridGap="1rem"/>
+                                </f:customLayout>
+                                <f:GridListItem class="sapUiSmallMarginEnd">
+                                    <HBox class="sapUiSmallMargin">
+                                      <layoutData>
+                                        <FlexItemData growFactor="1" shrinkFactor="0" />
+                                       </layoutData>
+                                        <Avatar src="{photo}" displaySize="S" displayShape="Square" backgroundColor="Placeholder"/>
+                                        <VBox class="sapUiSmallMarginBegin" justifyContent="SpaceAround" width="90%">
+                                            <Title text="{name}" tooltip="{name}" />
+                                            <Label text="{employments/0/title}" wrapping="true" tooltip="{employments/0/title}" />
+                                        </VBox>
+                                        <HBox direction="RowReverse" alignItems="Center">
+                                            <Button icon="sap-icon://decline" type="Transparent" press="deleteCandidate(${assignmentId})" />
+                                        </HBox>
+                                    </HBox>
+                                </f:GridListItem>
+                            </f:GridList>
+                        </VBox>
+                        <Title titleStyle="H3" text="{i18n>STEP1_CHOOSE_PROGRAM_TITLE}" class="sapUiLargeMarginTop" />
+                        <f:GridList id="spotAwardProgramGridList" items="{ path: '/spotAwardProgram' }" class="sapUiSmallMarginTop" mode="SingleSelectMaster" selectionChange="chooseSpotAwardProgram" busyIndicatorDelay="100">
+                            <f:customLayout>
+                              <g:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 21rem))" gridGap="1rem"/>
+                            </f:customLayout>
+                            <f:GridListItem class="sapUiSmallMarginEnd" type="Active">
+                                <VBox class="sapUiSmallMargin" height="100%" alignItems="Center">
+                                  <layoutData>
+                                    <FlexItemData growFactor="1" shrinkFactor="0" />
+                                   </layoutData>
+                                    <HBox direction="RowReverse" width="100%">
+                                        <core:Icon decorative="false" src="sap-icon://message-information" color="Default" press="showProgramInformation(${description}, $event)" />
+                                    </HBox>
+                                    <Avatar src="data:{image/mimeType};base64, {image/fileContent}" displaySize="L" displayShape="Square" backgroundColor="Placeholder"/>
+                                    <Text text="{displayedProgramName}" class="sapUiSmallMarginTop"/>
+                                </VBox>
+                            </f:GridListItem>
+                        </f:GridList>
+                    </WizardStep>
+                    <WizardStep id="CategoryLevel" title="{i18n>STEP2_CHOOSE_CATEGORY_LEVEL}" validated="false" icon="sap-icon://multi-select" class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                        <Title titleStyle="H3" text="{i18n>STEP2_CHOOSE_CATEGORY_TITLE}"/>
+                        <f:GridList id="spotAwardCategoryGridList" items="{ path: '/spotAwardCategory' }" class="sapUiSmallMarginTop" mode="SingleSelectMaster" selectionChange="chooseSpotAwardCategory">
+                            <f:customLayout>
+                              <g:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 21rem))" gridGap="1rem"/>
+                            </f:customLayout>
+                            <f:GridListItem class="sapUiSmallMarginEnd" type="Active">
+                                <HBox class="sapUiSmallMargin">
+                                  <layoutData>
+                                    <FlexItemData growFactor="1" shrinkFactor="0" />
+                                   </layoutData>
+                                    <Avatar displaySize="S" displayShape="Square" src="data:{image/mimeType};base64, {image/fileContent}" backgroundColor="Placeholder"/>
+                                    <HBox class="sapUiSmallMarginBegin" alignItems="Center">
+                                        <Label text="{title}" design="Bold" wrapping="true" />
+                                    </HBox>
+                                </HBox>
+                            </f:GridListItem>
+                        </f:GridList>
+                        <Title titleStyle="H3" text="{i18n>STEP2_CHOOSE_LEVEL_TITLE}" class="sapUiLargeMarginTop"/>
+                        <f:GridList id="spotAwardLevelGridList" items="{ path: '/spotAwardLevel' }" class="sapUiSmallMarginTop" mode="SingleSelectMaster" selectionChange="chooseSpotAwardLevel">
+                            <f:customLayout>
+                              <g:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 21rem))" gridGap="1rem"/>
+                            </f:customLayout>
+                            <f:GridListItem class="sapUiSmallMarginEnd" type="Active">
+                                <HBox class="sapUiSmallMargin">
+                                  <layoutData>
+                                     <FlexItemData growFactor="1" shrinkFactor="0" />
+                                    </layoutData>
+                                    <Avatar displaySize="S" displayShape="Square" src="data:{image/mimeType};base64, {image/fileContent}" backgroundColor="Placeholder" />
+                                    <HBox class="sapUiSmallMarginBegin" alignItems="Center">
+                                        <Label text="{title}" design="Bold" wrapping="true" />
+                                    </HBox>
+                                </HBox>
+                            </f:GridListItem>
+                        </f:GridList>
+                    </WizardStep>
+                    <WizardStep id="Amount" title="{i18n>STEP3_AMOUNT}" validated="true" icon="sap-icon://accounting-document-verification" complete="completeAmountStep" activate="beforeAmountStep" class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                        <VBox>
+                            <Title titleStyle="H3" text="{i18n>STEP3_SELECT_AMOUNT_TITLE}"/>
+                            <Text text="{i18n>STEP3_SELECT_AMOUNT_DESC}"/>
+                        </VBox>
+                        <f:GridList id="amountList" class="sapUiSmallMarginTop" items="{ path: '/chosenEmployees/data' }">
+                            <f:customLayout>
+                              <g:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 21rem))" gridGap="1rem"/>
+                            </f:customLayout>
+                            <f:GridListItem class="sapUiSmallMarginEnd">
+                                <VBox class="sapUiSmallMargin">
+                                  <layoutData>
+                                    <FlexItemData growFactor="1" shrinkFactor="0" />
+                                   </layoutData>
+                                    <HBox>
+                                        <Avatar src="{photo}" displaySize="S" displayShape="Square" backgroundColor="Placeholder"/>
+                                        <VBox class="sapUiSmallMarginBegin" justifyContent="SpaceAround">
+                                            <Title text="{name}"/>
+                                            <Label wrapping="true" text="{employments/0/title}"/>
+                                        </VBox>
+                                    </HBox>
+                                    <HBox class="sapUiSmallMarginTop">
+                                        <Select id="selectSpotAwardAmount" width="{= ${amountSelection} === 'CUSTOM' ? '6rem' : '10rem'}" items="{ path: 'ruleInfo/possibleAmounts', templateShareable:false}" selectedKey="{ruleInfo/recommendedAmount}" change="storeAmount" forceSelection="false">
+                                            <core:Item key="{amountKey}" text="{amountText}" />
+                                        </Select>
+                                        <Input type="Number" change="storeCustomAmount($event, ${$source>/value})" width="{= ${ruleInfo/currency} === 'points' ? '4rem' : '5rem'}" visible="{= ${amountSelection} === 'CUSTOM'}" class="sapUiTinyMarginBegin"/>
+                                        <Text class="sapUiTinyMarginTop sapUiTinyMarginBegin" text="{ruleInfo/currency}" wrapping="false" tooltip="{ruleInfo/currency}"/>
+                                    </HBox>
+                                </VBox>
+                            </f:GridListItem>
+                        </f:GridList>
+                    </WizardStep>
+                    <WizardStep id="Description" title="{i18n>STEP4_MESSAGE}" validated="false" icon="sap-icon://post" complete="completeDescStep" class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                        <Title titleStyle="H3" text="{i18n>STEP4_MSG_TITLE}"/>
+                        <VBox class="sapUiSmallMarginTop">
+                            <Label required="true" text="{= ${/chosenEmployeesLength} > 1 ? ${i18n>STEP4_MSG_MULTIPLE_NOMINEE_DESC} : ${i18n>STEP4_MSG_SINGLE_NOMINEE_DESC}}" />
+                            <TextArea id="msgToRecip" placeholder="{i18n>STEP4_MSG_NOMINEE_PLACEHOLDER}" maxLength="4000" width="100%" rows="7" liveChange="validateDescStep" />
+                        </VBox>
+                        <VBox class="sapUiSmallMarginTop" visible="{/useCustomOpt}">
+                            <Label required="true" text="{= ${/chosenEmployeesLength} > 1 ? ${i18n>STEP4_MSG_MULTIPLE_APPROVER_DESC} : ${i18n>STEP4_MSG_SINGLE_APPROVER_DESC}}" />
+                            <TextArea id="msgToApprover" placeholder="{i18n>STEP4_MSG_APPROVER_PLACEHOLDER}" maxLength="4000" width="100%" rows="7" liveChange="validateDescStep" />
+                        </VBox>
+                    </WizardStep>
+                    <WizardStep id="Submit" title="{i18n>STEP5_SUBMIT}" validated="true" icon="sap-icon://expense-report" class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                        <VBox class="sapUiSmallMarginBottom">
+                            <Title titleStyle="H3" text="{i18n>STEP5_SUBMIT_TITLE}"/>
+                        </VBox>
+                        <f:GridList items="{ path: '/chosenEmployees/data' }">
+                            <f:customLayout>
+                              <g:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 21rem))" gridGap="1rem"/>
+                            </f:customLayout>
+                            <f:GridListItem class="sapUiSmallMarginEnd">
+                                <f:Card>
+                                    <f:header>
+                                        <card:Header title="{name}" subtitle="{employments/0/title}" iconSrc="{photo}" iconDisplayShape="Square" />
+                                    </f:header>
+                                    <f:content>
+                                        <VBox class="sapUiSmallMargin">
+                                            <Label text="{i18n>STEP5_AWARD_PROGRAM_LABEL}" />
+                                            <Text text="{/chosenSpotAwardProgram/externalCode}" />
+                                            <Label class="sapUiSmallMarginTop" text="{i18n>STEP5_CATEGORY_LEVEL_LABEL}" />
+                                            <Text text="{/chosenSpotAwardCategory/title} - {/chosenSpotAwardLevel/title}" />
+                                            <Label class="sapUiSmallMarginTop" text="{i18n>STEP5_AMOUNT_LABEL}" />
+                                            <Text text="{amount} {ruleInfo/currency}" />
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+                            </f:GridListItem>
+                        </f:GridList>
+                    </WizardStep>
+                </Wizard>
+            </content>
+
+            <footer>
+                <OverflowToolbar>
+                    <ToolbarSpacer/>
+                    <Button text="{i18n>WIZARD_CANCEL_BTN_LABEL}" type="Ghost" press="handleWizardCancel"/>
+                </OverflowToolbar>
+            </footer>
+        </Page>
+        <!-- </pages> -->
+    </NavContainer>
+</mvc:View>

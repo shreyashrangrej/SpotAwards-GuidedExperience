@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Popover showHeader="false" contentWidth="15rem" contentHeight="10rem" placement="Auto">
+        <HBox class="sapUiSmallMargin">
+            <!-- <Text text="{/info}" /> -->
+            <FormattedText htmlText="{/info}"/>
+        </HBox>
+    </Popover>
+</core:FragmentDefinition>
